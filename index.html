@@ -28,13 +28,13 @@
     body { background: var(--bg-dark); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; line-height: 1.6; -webkit-tap-highlight-color: transparent; }
     h1, h2, h3, h4, .btn, .stat-val, .t-title, .rank-num { font-family: 'Space Grotesk', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
-    /* --- BACKGROUND --- */
+    /* BACKGROUND FX */
     #chart-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; pointer-events: none; }
     .grid-overlay { position: fixed; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 50px 50px; z-index: -2; pointer-events: none; }
     .ambient-glow { position: fixed; top: -30vh; right: -10vw; width: 60vw; height: 60vw; background: radial-gradient(circle, var(--primary-glow), transparent 70%); filter: blur(140px); z-index: -3; animation: glowPulse 8s infinite alternate; }
     @keyframes glowPulse { 0% { opacity: 0.2; } 100% { opacity: 0.5; } }
 
-    /* --- NAVBAR --- */
+    /* NAVBAR */
     .navbar { position: fixed; top: 0; width: 100%; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); transition: 0.3s; }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .brand-logo-img { height: 44px; width: 44px; border-radius: 50%; border: 2px solid var(--primary); box-shadow: 0 0 15px var(--primary-glow); transition: 0.3s; }
@@ -47,7 +47,7 @@
     .menu-toggle { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
     .bar { width: 24px; height: 2px; background: #fff; transition: 0.3s; }
 
-    /* --- HERO --- */
+    /* HERO */
     .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 20px 80px; position: relative; }
     .hero-container { max-width: 1280px; width: 100%; display: grid; grid-template-columns: 1fr 0.85fr; gap: 60px; align-items: center; }
     .mobile-logo-box { display: none; margin-bottom: 20px; text-align: center; }
@@ -57,32 +57,38 @@
     .hero-title span { color: var(--primary); }
     .hero-desc { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 40px; }
 
-    /* --- DASHBOARD & QUESTS --- */
-    .waitlist-container { width: 100%; max-width: 500px; }
-    .waitlist-form { background: #2a2a2a; padding: 10px; border-radius: 12px; display: flex; border: 1px solid var(--border); transition:0.3s; }
-    .waitlist-form:focus-within { border-color:var(--primary); box-shadow:0 0 20px var(--primary-glow); }
+    /* FORM & DASHBOARD */
+    .waitlist-container { width: 100%; max-width: 500px; position: relative; }
+    .waitlist-form { background: #2a2a2a; padding: 10px; border-radius: 12px; display: flex; border: 1px solid var(--border); transition: 0.3s; }
+    .waitlist-form:focus-within { border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
     .wl-input { flex: 1; background: transparent; border: none; padding: 0 15px; color: #fff; outline: none; }
-    .btn-main { padding: 12px 28px; background: var(--primary); border: none; color: #000; font-weight: 800; border-radius: 8px; cursor: pointer; transition:0.2s; }
-    .btn-main:hover { background:var(--primary-hover); transform:scale(1.02); }
-    
-    .dashboard-panel { display: none; background: #111; border: 1px solid var(--primary); padding: 25px; border-radius: 16px; animation: slideUp 0.5s ease; box-shadow: 0 0 40px var(--primary-glow); }
+    .btn-main { padding: 12px 28px; background: var(--primary); border: none; color: #000; font-weight: 800; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .btn-main:hover { background: var(--primary-hover); transform: scale(1.02); }
+
+    /* REAL DASHBOARD STYLES */
+    .dashboard-panel { display: none; background: #111; border: 1px solid var(--primary); padding: 25px; border-radius: 16px; animation: slideUp 0.5s ease; box-shadow: 0 0 40px var(--primary-glow); width: 100%; }
     .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
-    .user-xp { font-size: 24px; font-weight: 800; color: var(--primary); }
-    .user-rank { font-size: 14px; color: #888; }
-    .ref-box { background: #222; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border: 1px dashed #555; }
-    .ref-link { color: #fff; font-family: monospace; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 10px; }
-    .copy-btn { background: var(--primary); color: #000; font-weight: 700; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-    .quest-list { display: flex; flex-direction: column; gap: 10px; }
-    .quest-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 8px; transition: 0.2s; }
-    .quest-item:hover { background: rgba(255,255,255,0.1); }
-    .q-info { display: flex; align-items: center; gap: 10px; color: #fff; font-size: 14px; font-weight: 600; }
-    .q-badge { background: #333; color: var(--gold); font-size: 11px; padding: 2px 6px; border-radius: 4px; }
-    .q-btn { background: transparent; border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+    .user-xp { font-size: 32px; font-weight: 800; color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
+    .user-rank { font-size: 14px; color: #888; margin-top: 5px; }
+    
+    .ref-box { background: #000; padding: 15px; border-radius: 8px; border: 1px dashed #555; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .ref-link { font-family: monospace; font-size: 14px; color: var(--primary); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 10px; }
+    .copy-btn { background: #333; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+    .copy-btn:hover { background: var(--primary); color: #000; }
+
+    .quest-list { display: flex; flex-direction: column; gap: 12px; }
+    .quest-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; transition: 0.2s; border: 1px solid transparent; }
+    .quest-item:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); }
+    .q-info { display: flex; flex-direction: column; gap: 4px; }
+    .q-title { font-weight: 700; color: #fff; font-size: 15px; }
+    .q-badge { color: var(--gold); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+    .q-btn { background: transparent; border: 1px solid var(--border); color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: 0.2s; }
     .q-btn:hover { border-color: var(--primary); color: var(--primary); }
     .q-btn.claimed { background: var(--success); color: #000; border: none; cursor: default; }
-    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    /* --- 3D VISUAL --- */
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* 3D Visual */
     .visual-box { position: relative; perspective: 1000px; display: flex; justify-content: center; }
     .nft-card-3d { width: 380px; height: 480px; background: radial-gradient(120% 120% at 50% 0%, rgba(20, 20, 30, 0.9), #050507); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; position: relative; transform-style: preserve-3d; animation: floatCard 8s ease-in-out infinite; box-shadow: 0 30px 60px rgba(0,0,0,0.9); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.4s; }
     .nft-card-3d:hover { border-color: var(--primary); box-shadow: 0 0 60px var(--primary-glow); transform: scale(1.02) translateY(-10px); }
@@ -96,27 +102,29 @@
     @keyframes floatCard { 0%, 100% { transform: rotateY(-5deg) translateY(0); } 50% { transform: rotateY(5deg) translateY(-20px); } }
 
     /* SECTIONS */
-    section { padding: 120px 24px; max-width: 1200px; margin: 0 auto; }
-    .section-header { text-align: center; margin-bottom: 80px; }
+    section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 60px; }
     .section-tag { color: var(--primary); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; display: block; text-shadow: 0 0 10px var(--primary-glow); }
     .section-title { font-size: 42px; font-weight: 800; color: #fff; }
 
-    /* STATS */
-    .stats-row { display: flex; justify-content: center; gap: 40px; margin-bottom: 80px; flex-wrap: wrap; }
+    /* STATS ROW */
+    .stats-row { display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap; }
     .stat-item { text-align: center; background: var(--bg-panel); padding: 30px 50px; border-radius: 12px; min-width: 200px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s; }
     .stat-item:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 0 20px var(--primary-glow); }
-    .stat-val { font-size: 36px; font-weight: 800; color: var(--primary); display: block; }
+    .stat-val { font-size: 32px; font-weight: 800; color: var(--primary); display: block; }
     .stat-label { font-size: 13px; color: #fff; letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; display: block; font-weight: 600; }
 
     /* LEADERBOARD */
     .lb-section { padding: 80px 20px; max-width: 800px; margin: 0 auto; }
-    .lb-table { width: 100%; border-collapse: collapse; background: #121212; border-radius: 12px; overflow: hidden; }
-    .lb-table th { text-align: left; padding: 20px; background: #1a1a1a; color: #888; font-size: 12px; text-transform: uppercase; }
-    .lb-table td { padding: 20px; border-bottom: 1px solid #222; font-weight: 600; }
-    .rank-1 { color: var(--gold); }
-
+    .leaderboard-box { background: #121212; border: 1px solid #333; border-radius: 20px; padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+    .lb-table { width: 100%; border-collapse: collapse; }
+    .lb-table th { text-align: left; color: var(--text-muted); font-size: 12px; padding-bottom: 20px; border-bottom: 1px solid #333; text-transform: uppercase; }
+    .lb-table td { padding: 20px 0; border-bottom: 1px solid #222; color: #fff; font-size: 15px; font-weight: 600; }
+    .rank-num { font-size: 18px; font-weight: 800; color: #666; }
+    .rank-1 { color: var(--gold); } .rank-2 { color: #C0C0C0; } .rank-3 { color: #CD7F32; }
+    
     /* FLIP CARDS */
-    .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
     .flip-card { background: transparent; width: 100%; height: 400px; perspective: 1000px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
     .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
@@ -137,14 +145,14 @@
     .timeline { position: relative; max-width: 800px; margin: 0 auto; }
     .timeline::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--primary), #333); }
     .t-item { position: relative; padding-left: 90px; margin-bottom: 70px; }
-    .t-dot { position: absolute; left: 18px; top: 0; width: 16px; height: 16px; background: var(--primary); border-radius: 50%; z-index: 2; box-shadow: 0 0 0 6px rgba(29, 185, 84, 0.2), 0 0 20px var(--primary); transition: 0.3s; }
-    .t-item:hover .t-dot { transform: scale(1.2); box-shadow: 0 0 0 8px rgba(29, 185, 84, 0.3), 0 0 30px var(--primary); }
-    .t-phase { color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: 2px; margin-bottom: 4px; display: block; text-shadow: 0 0 10px var(--primary-glow); }
-    .t-weeks { color: #fff; font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; display: block; opacity: 0.6; }
+    .t-dot { position: absolute; left: 18px; top: 0; width: 16px; height: 16px; background: var(--primary); border-radius: 50%; z-index: 2; box-shadow: 0 0 0 6px rgba(29, 185, 84, 0.2); transition: 0.3s; }
+    .t-item:hover .t-dot { transform: scale(1.2); box-shadow: 0 0 20px var(--primary); }
+    .t-phase { color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: 2px; margin-bottom: 4px; display: block; }
+    .t-weeks { color: #fff; font-size: 11px; font-weight: 600; opacity: 0.6; display: block; margin-bottom: 8px; }
     .t-title { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
     .t-list { list-style: none; }
     .t-list li { color: var(--text-muted); font-size: 16px; margin-bottom: 10px; position: relative; padding-left: 24px; }
-    .t-list li::before { content: '•'; position: absolute; left: 0; color: var(--primary); font-weight: bold; font-size: 20px; line-height: 1; top: -2px; }
+    .t-list li::before { content: '•'; position: absolute; left: 0; color: var(--primary); font-weight: bold; top: -2px; font-size: 20px; line-height: 1; }
 
     /* PERPDEX */
     .perpdex-box { background: #121212; border: 1px solid #333; border-radius: 24px; padding: 100px 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
@@ -160,17 +168,31 @@
     .faq-item.active .plus { transform: rotate(45deg); color: var(--primary); }
 
     /* FOOTER */
-    footer { border-top: 1px solid #222; padding: 80px 20px; margin-top: 120px; text-align: center; background: #000; }
-    .socials { display: flex; justify-content: center; gap: 24px; margin-bottom: 30px; }
-    .s-icon { width: 54px; height: 54px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid transparent; }
-    .s-icon:hover { background: var(--primary); color: #000; transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
-    .s-icon svg { width: 24px; height: 24px; fill: currentColor; }
+    footer { border-top: 1px solid #222; padding: 80px 20px; margin-top: 100px; text-align: center; background: #000; }
+    .socials { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
+    .s-icon { width: 50px; height: 50px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; }
+    .s-icon:hover { background: var(--primary); color: #000; transform: translateY(-5px); }
+    .s-icon svg { width: 22px; height: 22px; fill: currentColor; }
 
-    /* RESPONSIVE */
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.4s ease; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal { width: 90%; max-width: 900px; height: 80vh; background: #0e1118; border: 1px solid #333; border-radius: 24px; display: grid; grid-template-columns: 0.8fr 1.2fr; overflow: hidden; transform: scale(0.9); transition: 0.4s; }
+    .modal-overlay.active .modal { transform: scale(1); }
+    .modal-visual { background: radial-gradient(circle, #1a1a2e, #000); display: flex; align-items: center; justify-content: center; position: relative; }
+    .holo-card { width: 200px; height: 300px; border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); backdrop-filter: blur(5px); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: holoFloat 4s infinite; box-shadow: 0 0 40px var(--primary-glow); }
+    .holo-logo { width: 100px; filter: drop-shadow(0 0 20px var(--primary)); }
+    @keyframes holoFloat { 0%,100% {transform:translateY(0)} 50% {transform:translateY(-10px)} }
+    .modal-content { padding: 50px; overflow-y: auto; position: relative; }
+    .close-modal { position: absolute; top: 25px; right: 30px; font-size: 32px; cursor: pointer; color: #fff; z-index: 10; font-weight: bold; }
+    .mint-info { background: #181818; border-left: 4px solid var(--primary); padding: 24px; margin: 30px 0; }
+    .mint-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; }
+    .mint-btn { width: 100%; padding: 16px; background: var(--primary); color: #000; font-weight: 800; border-radius: 500px; border: none; cursor: pointer; margin-top: 20px; }
+
     @media (max-width: 900px) {
       .hero-container { grid-template-columns: 1fr; text-align: center; }
       .waitlist-container { margin: 0 auto; }
-      .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #121212; flex-direction: column; padding: 30px; }
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #121212; flex-direction: column; padding: 20px; }
       .nav-links.active { display: flex; }
       .menu-toggle { display: flex; }
       .visual-box { display: none; }
@@ -178,7 +200,6 @@
       .modal { grid-template-columns: 1fr; height: 90vh; }
       .modal-visual { display: none; }
       .stats-row { flex-direction: column; gap: 20px; }
-      .hero-title { font-size: 48px; }
     }
   </style>
 </head>
@@ -193,7 +214,7 @@
 
   <nav class="navbar">
     <a href="#" class="brand sfx-click">
-      <img src="logo.png" alt="MonaPrime Logo" class="brand-logo-img">
+      <img src="logo.png" alt="Logo" class="brand-logo-img">
       <h1>MonaPrime</h1>
     </a>
     <div class="menu-toggle sfx-click" onclick="document.getElementById('navLinks').classList.toggle('active')">
@@ -215,13 +236,14 @@
         <div class="mobile-logo-box"><img src="logo.png" alt="Logo" class="mobile-logo-img"></div>
         <div class="hero-badge">GORILLA SEASON BEGINS</div>
         <h1 class="hero-title">The Genesis Utility <br> <span>on Monad.</span></h1>
-        <p class="hero-desc">Fastest, strongest, gorilla-powered PerpDEX. <br>Sign up to generate referral link and earn XP.</p>
+        <p class="hero-desc">Fastest, strongest, gorilla-powered PerpDEX. <br>Sign up for Early Access, complete quests & earn XP.</p>
         
         <div class="waitlist-container">
           <form id="joinForm" class="waitlist-form">
             <input type="email" id="email" class="wl-input" placeholder="Enter your email..." required>
-            <button type="submit" class="btn-main sfx-click">Join & Earn XP</button>
+            <button type="submit" class="btn-main sfx-click">Start Quests</button>
           </form>
+
           <div id="dashboard" class="dashboard-panel">
             <div class="dash-header">
               <div>
@@ -234,7 +256,7 @@
               </div>
             </div>
             
-            <div style="font-size:12px; color:#aaa; margin-bottom:8px;">YOUR REFERRAL LINK (+150 XP each)</div>
+            <div style="font-size:12px; color:#aaa; margin-bottom:8px;">REFERRAL LINK (+150 XP each)</div>
             <div class="ref-box">
               <span id="refLink" class="ref-link">Generating...</span>
               <button class="copy-btn sfx-click" onclick="copyRef()">COPY</button>
@@ -243,16 +265,25 @@
             <div style="font-size:12px; color:#aaa; margin-bottom:8px;">QUESTS</div>
             <div class="quest-list">
               <div class="quest-item">
-                <div class="q-info"><span>Follow on X</span> <span class="q-badge">+200 XP</span></div>
+                <div class="q-info">
+                  <span class="q-title">Follow on X</span>
+                  <span class="q-badge">⚡ 200 XP</span>
+                </div>
                 <button class="q-btn" id="btn-twitter" onclick="doTask('twitter', 'https://x.com/monadprimates')">Go</button>
               </div>
               <div class="quest-item">
-                <div class="q-info"><span>Join Telegram</span> <span class="q-badge">+200 XP</span></div>
+                <div class="q-info">
+                  <span class="q-title">Join Telegram</span>
+                  <span class="q-badge">⚡ 200 XP</span>
+                </div>
                 <button class="q-btn" id="btn-telegram" onclick="doTask('telegram', 'https://t.me/MonaPrime')">Go</button>
               </div>
               <div class="quest-item">
-                <div class="q-info"><span>Invite 3 Friends</span> <span class="q-badge">+450 XP</span></div>
-                <button class="q-btn" style="cursor:default; border-color:#333; color:#666;">Auto-Track</button>
+                <div class="q-info">
+                  <span class="q-title">Invite 3 Friends</span>
+                  <span class="q-badge">🔥 450 XP</span>
+                </div>
+                <button class="q-btn" style="cursor:default; color:#666; border-color:#333;">Auto</button>
               </div>
             </div>
           </div>
@@ -294,31 +325,31 @@
       <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
         <div class="flip-inner">
           <div class="flip-front"><div class="huge-emoji">⚡</div><div class="front-title">Early Access</div><div class="tap-hint">Tap Info</div></div>
-          <div class="flip-back"><h3>Early Access</h3><p>Priority access to all early phases:</p><ul><li>Testnet v1 (Alpha)</li><li>Testnet v2 (Incentivized)</li><li>Mainnet Restricted Alpha</li></ul></div>
+          <div class="flip-back"><h3>Early Access</h3><p>Holders get priority access to all early phases:</p><ul><li>Testnet v1</li><li>Testnet v2 (incentivized)</li><li>Mainnet restricted alpha</li></ul></div>
         </div>
       </div>
       <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
         <div class="flip-inner">
           <div class="flip-front"><div class="huge-emoji">💰</div><div class="front-title">Fee Discounts</div><div class="tap-hint">Tap Info</div></div>
-          <div class="flip-back"><h3>Trading Fee Discounts</h3><p>Huge discounts via NFT:</p><ul><li>Up to 90% Maker/Taker Reduction</li><li>Volume-based Tier Discounts</li></ul></div>
+          <div class="flip-back"><h3>Trading Fee Discounts</h3><p>On the perp DEX:</p><ul><li>Up to 90% maker/taker fee reduction</li><li>Additional volume-based tier discounts</li></ul></div>
         </div>
       </div>
       <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
         <div class="flip-inner">
           <div class="flip-front"><div class="huge-emoji">📈</div><div class="front-title">Multiplier</div><div class="tap-hint">Tap Info</div></div>
-          <div class="flip-back"><h3>Airdrop Multiplier</h3><p>Maximize your score:</p><ul><li>Score Multiplier applied</li><li>Time-held based bonus boosts</li></ul></div>
+          <div class="flip-back"><h3>Airdrop Multiplier</h3><p>During ecosystem airdrop:</p><ul><li>Score multiplier</li><li>Time-held based bonus boosts</li></ul></div>
         </div>
       </div>
       <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
         <div class="flip-inner">
           <div class="flip-front"><div class="huge-emoji">🤝</div><div class="front-title">Partner Drops</div><div class="tap-hint">Tap Info</div></div>
-          <div class="flip-back"><h3>Partner Drops</h3><p>Access opportunities:</p><ul><li>Exclusive Whitelist Spots</li><li>Snapshot-based Airdrops</li></ul></div>
+          <div class="flip-back"><h3>Partner Opportunities</h3><p>Access to:</p><ul><li>Exclusive WL spots</li><li>Snapshot-based airdrops</li><li>Testnet + bounty opportunities</li></ul></div>
         </div>
       </div>
       <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
         <div class="flip-inner">
           <div class="flip-front"><div class="huge-emoji">👑</div><div class="front-title">Privileges</div><div class="tap-hint">Tap Info</div></div>
-          <div class="flip-back"><h3>Future Privileges</h3><p>VIP status for events:</p><ul><li>Priority spots for events</li><li>Whitelist for future products</li></ul></div>
+          <div class="flip-back"><h3>Future Privileges</h3><p>Holders enjoy:</p><ul><li>Priority spots for IRL/URL events</li><li>Early beta access to new products</li></ul></div>
         </div>
       </div>
     </div>
@@ -327,12 +358,12 @@
   <section id="roadmap">
     <div class="section-header"><span class="section-tag">GTM Strategy</span><h2 class="section-title">Final Roadmap</h2></div>
     <div class="timeline">
-      <div class="t-item sfx-hover"><div class="t-dot"></div><span class="t-phase">PHASE 1</span><span class="t-weeks">WEEKS 0–4</span><div class="t-title">Setup & Preparation</div><ul class="t-list"><li>MonaPrime Utility Finalization</li><li>NFT Contract & Mint Page Audit</li><li>Branding: "Gorilla-Powered" Identity</li></ul></div>
-      <div class="t-item sfx-hover"><div class="t-dot"></div><span class="t-phase">PHASE 2</span><span class="t-weeks">WEEKS 4–8</span><div class="t-title">NFT Launch</div><ul class="t-list"><li>Pre-Mint Campaign & Partner WL</li><li>Public Mint (2,222 Supply)</li><li>NFT Reveal Event</li></ul></div>
-      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 3</span><span class="t-weeks" style="color:#555;">WEEKS 8–12</span><div class="t-title" style="color:#777;">Testnet v1 (Closed)</div><ul class="t-list"><li>Core Trading Engine (BTC/ETH)</li><li>Holder-Exclusive Access Only</li></ul></div>
-      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 4</span><span class="t-weeks" style="color:#555;">WEEKS 12–18</span><div class="t-title" style="color:#777;">Incentivized Testnet v2</div><ul class="t-list"><li>Points-Based Task System</li><li>Major Testnet Campaign (Quests)</li></ul></div>
-      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 5</span><span class="t-weeks" style="color:#555;">WEEKS 18–28</span><div class="t-title" style="color:#777;">Mainnet Launch</div><ul class="t-list"><li>Public Mainnet (Gorilla Season)</li><li>Airdrop Program Active</li></ul></div>
-      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 6</span><span class="t-weeks" style="color:#555;">POST-MONTH 7</span><div class="t-title" style="color:#777;">Expansion</div><ul class="t-list"><li>New perpetual markets & Multi-chain</li><li>Global Growth (Asia, LatAm)</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot"></div><span class="t-phase">PHASE 1</span><span class="t-weeks">WEEKS 0–4</span><div class="t-title">Setup & Preparation</div><ul class="t-list"><li><strong>Utility Finalization:</strong> Early access, fee discounts, multipliers.</li><li><strong>NFT Contract:</strong> Reveal structure, metadata, mint page design.</li><li><strong>Perp DEX:</strong> Core risk engine, Oracle integration.</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot"></div><span class="t-phase">PHASE 2</span><span class="t-weeks">WEEKS 4–8</span><div class="t-title">Monaprime NFT Launch</div><ul class="t-list"><li><strong>Pre-Mint:</strong> Partner announcements, WL competitions.</li><li><strong>Mint:</strong> WL → Public mint. Snapshot #1.</li><li><strong>Holder Activation:</strong> Early access roles active.</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 3</span><span class="t-weeks" style="color:#555;">WEEKS 8–12</span><div class="t-title" style="color:#777;">Testnet v1 (Closed)</div><ul class="t-list"><li>Core Trading Engine: BTC/ETH perpetuals.</li><li>Holder-Exclusive Access Only.</li><li>NFT Utility Tests.</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 4</span><span class="t-weeks" style="color:#555;">WEEKS 12–18</span><div class="t-title" style="color:#777;">Incentivized Testnet v2</div><ul class="t-list"><li>Points-Based Task System Live.</li><li>Major Testnet Campaign: Quests & Leaderboard.</li><li>Partner Integrations: Wallets & Market Makers.</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 5</span><span class="t-weeks" style="color:#555;">WEEKS 18–28</span><div class="t-title" style="color:#777;">Mainnet Launch</div><ul class="t-list"><li>Mainnet Alpha: Limited markets + fee discounts active.</li><li>Public Mainnet: "Gorilla Season Begins".</li><li>Airdrop Program & Partner Drops.</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 6</span><span class="t-weeks" style="color:#555;">POST-MONTH 7</span><div class="t-title" style="color:#777;">Expansion</div><ul class="t-list"><li>New perpetual markets & Multi-chain.</li><li>Portfolio margin + copy trading.</li><li>Global Growth (Asia, LatAm).</li></ul></div>
     </div>
   </section>
 
@@ -365,6 +396,33 @@
     </div>
     <p>© 2025 MonaPrime. Built on Monad.</p>
   </footer>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal">
+      <div class="close-modal sfx-click" onclick="closeModal()">&times;</div>
+      <div class="modal-visual">
+        <div class="holo-card">
+          <img src="logo.png" class="holo-logo" alt="Key">
+          <div style="color:var(--primary); font-family:'Space Grotesk'; margin-top:20px; font-weight:800; letter-spacing:2px;">GENESIS KEY</div>
+        </div>
+      </div>
+      <div class="modal-content">
+        <h2 style="font-size:32px; font-weight:800; margin-bottom:5px;">Genesis Utility NFT</h2>
+        <p style="color:var(--text-muted);">The core identity and reward foundation.</p>
+        <div class="mint-info">
+          <div class="mint-row"><span>Supply</span> <span style="color:#fff; font-weight:700;">2,222</span></div>
+          <div class="mint-row"><span>Price</span> <span style="color:var(--primary);">TBA (MONAD)</span></div>
+          <button class="mint-btn sfx-click">GO TO MINT PAGE</button>
+        </div>
+        <h3 style="font-size:18px; margin-top:30px; margin-bottom:10px;">Utility Breakdown</h3>
+        <ul style="padding-left:20px; color:var(--text-muted); font-size:14px; line-height:1.8;">
+          <li><strong>Early Access:</strong> Priority for Testnet v1 & v2.</li>
+          <li><strong>Fee Discounts:</strong> Up to 90% Maker/Taker reduction.</li>
+          <li><strong>Airdrop Multiplier:</strong> Score boost & time-held bonuses.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <script>
     /* --- AUDIO --- */
@@ -474,11 +532,9 @@
 
     /* --- UTILS --- */
     function scrollToId(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+    function openModal(){ document.getElementById('detailModal').classList.add('active'); }
+    function closeModal(){ document.getElementById('detailModal').classList.remove('active'); }
     function toggleFaq(el){ el.classList.toggle('active'); playSound(clickSound); }
-    const modal = document.getElementById('detailModal');
-    function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
-    function closeModal() { modal.classList.remove('active'); document.body.style.overflow = 'auto'; }
-    modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
   </script>
 </body>
 </html>
