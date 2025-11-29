@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* --- CSS (Aynı Tasarım Korundu, Dashboard Eklendi) --- */
+    /* --- THEME --- */
     :root {
       --bg-dark: #000000;
       --bg-panel: #121212;
-      --primary: #1DB954;
+      --primary: #1DB954; /* Spotify Green */
       --primary-hover: #1ed760;
       --primary-glow: rgba(29, 185, 84, 0.5);
       --text-main: #FFFFFF;
@@ -25,31 +25,53 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-    body { background: var(--bg-dark); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
-    h1, h2, h3, h4, .btn { font-family: 'Space Grotesk', sans-serif; text-shadow: var(--shadow-pop); }
+    body { background: var(--bg-dark); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; line-height: 1.6; -webkit-tap-highlight-color: transparent; }
+    h1, h2, h3, h4, .btn, .stat-val, .t-title, .rank-num { font-family: 'Space Grotesk', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
-    /* Fixes */
-    .hero { min-height: 100vh; padding: 120px 20px 80px; display: flex; align-items: center; justify-content: center; }
-    .hero-container { max-width: 1200px; width: 100%; display: grid; grid-template-columns: 1fr 0.8fr; gap: 60px; align-items: center; }
-    .hero-title { font-size: clamp(40px, 5vw, 72px); font-weight: 800; line-height: 1; margin-bottom: 20px; }
+    /* --- BACKGROUND --- */
+    #chart-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; pointer-events: none; }
+    .grid-overlay { position: fixed; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 50px 50px; z-index: -2; pointer-events: none; }
+    .ambient-glow { position: fixed; top: -30vh; right: -10vw; width: 60vw; height: 60vw; background: radial-gradient(circle, var(--primary-glow), transparent 70%); filter: blur(140px); z-index: -3; animation: glowPulse 8s infinite alternate; }
+    @keyframes glowPulse { 0% { opacity: 0.2; } 100% { opacity: 0.5; } }
+
+    /* --- NAVBAR --- */
+    .navbar { position: fixed; top: 0; width: 100%; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); transition: 0.3s; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-logo-img { height: 44px; width: 44px; border-radius: 50%; border: 2px solid var(--primary); box-shadow: 0 0 15px var(--primary-glow); transition: 0.3s; }
+    .brand h1 { font-size: 24px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-link { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.3s; cursor: pointer; }
+    .nav-link:hover { color: #fff; text-shadow: 0 0 10px var(--primary); transform: translateY(-2px); }
+    .btn-connect { padding: 10px 24px; background: transparent; border: 1px solid var(--text-main); color: #fff; border-radius: 500px; cursor: pointer; font-size: 13px; font-weight: 700; transition: 0.3s; }
+    .btn-connect:hover { background: #fff; color: #000; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+    .menu-toggle { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+    .bar { width: 24px; height: 2px; background: #fff; transition: 0.3s; }
+
+    /* --- HERO --- */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 20px 80px; position: relative; }
+    .hero-container { max-width: 1280px; width: 100%; display: grid; grid-template-columns: 1fr 0.85fr; gap: 60px; align-items: center; }
+    .mobile-logo-box { display: none; margin-bottom: 20px; text-align: center; }
+    .mobile-logo-img { width: 140px; height: auto; filter: drop-shadow(0 0 20px var(--primary-glow)); }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 4px; background: var(--primary); color: #000; box-shadow: 0 0 10px var(--primary-glow); font-size: 12px; font-weight: 800; letter-spacing: 1px; margin-bottom: 24px; }
+    .hero-title { font-size: clamp(48px, 6vw, 72px); line-height: 1.0; font-weight: 800; letter-spacing: -2px; margin-bottom: 24px; color: #fff; text-shadow: 0 0 30px var(--primary-glow); }
     .hero-title span { color: var(--primary); }
-    .hero-desc { color: var(--text-muted); font-size: 18px; margin-bottom: 30px; max-width: 500px; }
-    
-    /* DASHBOARD & QUESTS */
+    .hero-desc { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 40px; }
+
+    /* --- DASHBOARD & QUESTS --- */
     .waitlist-container { width: 100%; max-width: 500px; }
-    .waitlist-form { background: #1a1a1a; padding: 10px; border-radius: 12px; display: flex; border: 1px solid var(--border); }
+    .waitlist-form { background: #2a2a2a; padding: 10px; border-radius: 12px; display: flex; border: 1px solid var(--border); transition:0.3s; }
+    .waitlist-form:focus-within { border-color:var(--primary); box-shadow:0 0 20px var(--primary-glow); }
     .wl-input { flex: 1; background: transparent; border: none; padding: 0 15px; color: #fff; outline: none; }
-    .btn-main { padding: 12px 28px; background: var(--primary); border: none; color: #000; font-weight: 800; border-radius: 8px; cursor: pointer; }
+    .btn-main { padding: 12px 28px; background: var(--primary); border: none; color: #000; font-weight: 800; border-radius: 8px; cursor: pointer; transition:0.2s; }
+    .btn-main:hover { background:var(--primary-hover); transform:scale(1.02); }
     
     .dashboard-panel { display: none; background: #111; border: 1px solid var(--primary); padding: 25px; border-radius: 16px; animation: slideUp 0.5s ease; box-shadow: 0 0 40px var(--primary-glow); }
     .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
     .user-xp { font-size: 24px; font-weight: 800; color: var(--primary); }
     .user-rank { font-size: 14px; color: #888; }
-    
     .ref-box { background: #222; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border: 1px dashed #555; }
     .ref-link { color: #fff; font-family: monospace; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 10px; }
     .copy-btn { background: var(--primary); color: #000; font-weight: 700; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-
     .quest-list { display: flex; flex-direction: column; gap: 10px; }
     .quest-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 8px; transition: 0.2s; }
     .quest-item:hover { background: rgba(255,255,255,0.1); }
@@ -58,65 +80,148 @@
     .q-btn { background: transparent; border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: 0.2s; }
     .q-btn:hover { border-color: var(--primary); color: var(--primary); }
     .q-btn.claimed { background: var(--success); color: #000; border: none; cursor: default; }
-
     @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    /* Other Styles (Simplified for context) */
-    .navbar { position: fixed; width: 100%; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(0,0,0,0.95); border-bottom: 1px solid var(--border); }
-    .brand { display: flex; gap: 10px; align-items: center; text-decoration: none; color: #fff; font-weight: 800; font-size: 22px; }
-    .brand img { width: 40px; border-radius: 50%; border: 2px solid var(--primary); }
-    .nav-links { display: flex; gap: 20px; } .nav-link { color: #aaa; text-decoration: none; font-weight: 600; cursor:pointer; }
-    .btn-connect { padding: 10px 20px; border: 1px solid #fff; background: transparent; color: #fff; border-radius: 50px; cursor: pointer; }
-    
-    .stats-row { display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap; }
-    .stat-card { background: #121212; border: 1px solid var(--border); padding: 25px 40px; border-radius: 16px; text-align: center; min-width: 200px; }
-    .stat-val { font-size: 32px; font-weight: 800; color: var(--primary); display: block; }
-    
+    /* --- 3D VISUAL --- */
+    .visual-box { position: relative; perspective: 1000px; display: flex; justify-content: center; }
+    .nft-card-3d { width: 380px; height: 480px; background: radial-gradient(120% 120% at 50% 0%, rgba(20, 20, 30, 0.9), #050507); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; position: relative; transform-style: preserve-3d; animation: floatCard 8s ease-in-out infinite; box-shadow: 0 30px 60px rgba(0,0,0,0.9); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.4s; }
+    .nft-card-3d:hover { border-color: var(--primary); box-shadow: 0 0 60px var(--primary-glow); transform: scale(1.02) translateY(-10px); }
+    .card-logo { width: 180px; height: auto; filter: drop-shadow(0 0 20px var(--primary-glow)); transition: 0.4s; }
+    .nft-card-3d:hover .card-logo { transform: scale(1.1) rotateZ(5deg); }
+    .card-info { text-align: center; margin-top: 30px; }
+    .card-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 5px; }
+    .card-sub { font-size: 12px; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
+    .card-cta { margin-top: 20px; font-size: 12px; color: var(--text-muted); opacity: 0; transition: 0.3s; }
+    .nft-card-3d:hover .card-cta { opacity: 1; transform: translateY(-5px); }
+    @keyframes floatCard { 0%, 100% { transform: rotateY(-5deg) translateY(0); } 50% { transform: rotateY(5deg) translateY(-20px); } }
+
+    /* SECTIONS */
+    section { padding: 120px 24px; max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 80px; }
+    .section-tag { color: var(--primary); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; display: block; text-shadow: 0 0 10px var(--primary-glow); }
+    .section-title { font-size: 42px; font-weight: 800; color: #fff; }
+
+    /* STATS */
+    .stats-row { display: flex; justify-content: center; gap: 40px; margin-bottom: 80px; flex-wrap: wrap; }
+    .stat-item { text-align: center; background: var(--bg-panel); padding: 30px 50px; border-radius: 12px; min-width: 200px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s; }
+    .stat-item:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 0 20px var(--primary-glow); }
+    .stat-val { font-size: 36px; font-weight: 800; color: var(--primary); display: block; }
+    .stat-label { font-size: 13px; color: #fff; letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; display: block; font-weight: 600; }
+
+    /* LEADERBOARD */
     .lb-section { padding: 80px 20px; max-width: 800px; margin: 0 auto; }
-    .lb-table { width: 100%; border-collapse: collapse; background: #121212; border-radius: 12px; }
-    .lb-table th { text-align: left; padding: 20px; color: #888; font-size: 12px; text-transform: uppercase; }
-    .lb-table td { padding: 15px 20px; border-bottom: 1px solid #222; font-weight: 600; }
+    .lb-table { width: 100%; border-collapse: collapse; background: #121212; border-radius: 12px; overflow: hidden; }
+    .lb-table th { text-align: left; padding: 20px; background: #1a1a1a; color: #888; font-size: 12px; text-transform: uppercase; }
+    .lb-table td { padding: 20px; border-bottom: 1px solid #222; font-weight: 600; }
     .rank-1 { color: var(--gold); }
 
-    /* Responsive */
-    @media(max-width:900px){ .hero-container{grid-template-columns:1fr; text-align:center;} .nav-links{display:none;} .visual-box{display:none;} }
-    
-    /* Background */
-    #chart-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; pointer-events: none; }
-    .ambient-glow { position: fixed; top: -30%; right: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, var(--primary-glow), transparent 70%); filter: blur(120px); z-index: -2; }
+    /* FLIP CARDS */
+    .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .flip-card { background: transparent; width: 100%; height: 400px; perspective: 1000px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; }
+    .flip-front { background: var(--bg-panel); z-index: 2; }
+    .huge-emoji { font-size: 70px; margin-bottom: 20px; filter: drop-shadow(0 0 20px var(--primary-glow)); animation: floatEmoji 3s ease-in-out infinite; }
+    .front-title { font-family: 'Space Grotesk'; font-size: 24px; font-weight: 800; color: #fff; text-transform: uppercase; }
+    .tap-hint { margin-top: 20px; font-size: 11px; color: var(--primary); opacity: 0.8; letter-spacing: 1px; font-weight: 600; text-transform: uppercase; border: 1px solid var(--primary); padding: 4px 12px; border-radius: 50px; }
+    .flip-back { background: linear-gradient(145deg, #121212, #050505); transform: rotateY(180deg); border: 1px solid var(--primary); box-shadow: 0 0 30px rgba(29, 185, 84, 0.2); align-items: flex-start; text-align: left; }
+    .flip-back h3 { font-size: 22px; color: var(--primary); margin-bottom: 12px; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+    .flip-back p { font-size: 14px; color: #ddd; margin-bottom: 15px; line-height: 1.5; }
+    .flip-back ul { list-style: none; padding: 0; margin: 0; }
+    .flip-back li { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; padding-left: 15px; position: relative; }
+    .flip-back li::before { content: '▹'; position: absolute; left: 0; color: var(--primary); }
+    @keyframes floatEmoji { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* TIMELINE */
+    .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+    .timeline::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--primary), #333); }
+    .t-item { position: relative; padding-left: 90px; margin-bottom: 70px; }
+    .t-dot { position: absolute; left: 18px; top: 0; width: 16px; height: 16px; background: var(--primary); border-radius: 50%; z-index: 2; box-shadow: 0 0 0 6px rgba(29, 185, 84, 0.2), 0 0 20px var(--primary); transition: 0.3s; }
+    .t-item:hover .t-dot { transform: scale(1.2); box-shadow: 0 0 0 8px rgba(29, 185, 84, 0.3), 0 0 30px var(--primary); }
+    .t-phase { color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: 2px; margin-bottom: 4px; display: block; text-shadow: 0 0 10px var(--primary-glow); }
+    .t-weeks { color: #fff; font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; display: block; opacity: 0.6; }
+    .t-title { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
+    .t-list { list-style: none; }
+    .t-list li { color: var(--text-muted); font-size: 16px; margin-bottom: 10px; position: relative; padding-left: 24px; }
+    .t-list li::before { content: '•'; position: absolute; left: 0; color: var(--primary); font-weight: bold; font-size: 20px; line-height: 1; top: -2px; }
+
+    /* PERPDEX */
+    .perpdex-box { background: #121212; border: 1px solid #333; border-radius: 24px; padding: 100px 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+    .locked-btn { display: inline-flex; align-items: center; gap: 10px; padding: 18px 36px; background: #222; color: #666; border-radius: 500px; cursor: not-allowed; font-family: 'Space Grotesk'; font-weight: 700; margin-top: 40px; font-size: 16px; border: 1px solid #333; }
+
+    /* FAQ */
+    .faq-item { border-bottom: 1px solid #333; }
+    .faq-q { padding: 20px 0; font-size: 18px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #fff; }
+    .faq-q:hover { color: var(--primary); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+    .faq-item.active .faq-a { max-height: 200px; padding-bottom: 20px; }
+    .plus { font-size: 20px; font-weight: bold; transition: 0.3s; }
+    .faq-item.active .plus { transform: rotate(45deg); color: var(--primary); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid #222; padding: 80px 20px; margin-top: 120px; text-align: center; background: #000; }
+    .socials { display: flex; justify-content: center; gap: 24px; margin-bottom: 30px; }
+    .s-icon { width: 54px; height: 54px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; border: 1px solid transparent; }
+    .s-icon:hover { background: var(--primary); color: #000; transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
+    .s-icon svg { width: 24px; height: 24px; fill: currentColor; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-container { grid-template-columns: 1fr; text-align: center; }
+      .waitlist-container { margin: 0 auto; }
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #121212; flex-direction: column; padding: 30px; }
+      .nav-links.active { display: flex; }
+      .menu-toggle { display: flex; }
+      .visual-box { display: none; }
+      .mobile-logo-box { display: block; }
+      .modal { grid-template-columns: 1fr; height: 90vh; }
+      .modal-visual { display: none; }
+      .stats-row { flex-direction: column; gap: 20px; }
+      .hero-title { font-size: 48px; }
+    }
   </style>
 </head>
 <body>
 
+  <audio id="sfx-hover" src="hover.mp3" preload="auto"></audio>
+  <audio id="sfx-click" src="click.mp3" preload="auto"></audio>
+
   <div class="ambient-glow"></div>
+  <div class="grid-overlay"></div>
   <canvas id="chart-canvas"></canvas>
 
   <nav class="navbar">
-    <a href="#" class="brand">
-      <img src="logo.png" alt="MonaPrime">
+    <a href="#" class="brand sfx-click">
+      <img src="logo.png" alt="MonaPrime Logo" class="brand-logo-img">
       <h1>MonaPrime</h1>
     </a>
-    <div class="nav-links">
-      <div class="nav-link" onclick="document.getElementById('genesis').scrollIntoView()">Utility</div>
-      <div class="nav-link" onclick="document.getElementById('leaderboard').scrollIntoView()">Leaderboard</div>
-      <div class="nav-link" onclick="document.getElementById('roadmap').scrollIntoView()">Roadmap</div>
+    <div class="menu-toggle sfx-click" onclick="document.getElementById('navLinks').classList.toggle('active')">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
     </div>
-    <button class="btn-connect">Connect Wallet</button>
+    <div class="nav-links" id="navLinks">
+      <div class="nav-link sfx-hover sfx-click" onclick="scrollToId('genesis')">Utility</div>
+      <div class="nav-link sfx-hover sfx-click" onclick="scrollToId('leaderboard')">Leaderboard</div>
+      <div class="nav-link sfx-hover sfx-click" onclick="scrollToId('roadmap')">Roadmap</div>
+      <div class="nav-link sfx-hover sfx-click" onclick="scrollToId('perpdex')">PerpDEX</div>
+      <div class="nav-link sfx-hover sfx-click" onclick="scrollToId('faq')">FAQ</div>
+    </div>
+    <button class="btn-connect sfx-hover sfx-click">Connect Wallet</button>
   </nav>
 
   <header class="hero">
     <div class="hero-container">
       <div class="hero-text">
-        <div style="background:var(--primary); color:#000; display:inline-block; padding:4px 12px; border-radius:4px; font-weight:800; font-size:12px; margin-bottom:20px;">GORILLA SEASON BEGINS</div>
+        <div class="mobile-logo-box"><img src="logo.png" alt="Logo" class="mobile-logo-img"></div>
+        <div class="hero-badge">GORILLA SEASON BEGINS</div>
         <h1 class="hero-title">The Genesis Utility <br> <span>on Monad.</span></h1>
-        <p class="hero-desc">Fastest, strongest, gorilla-powered PerpDEX. <br>Join the troop, complete quests, and climb the ranks.</p>
+        <p class="hero-desc">Fastest, strongest, gorilla-powered PerpDEX. <br>Sign up to generate referral link and earn XP.</p>
         
         <div class="waitlist-container">
           <form id="joinForm" class="waitlist-form">
             <input type="email" id="email" class="wl-input" placeholder="Enter your email..." required>
-            <button type="submit" class="btn-main">Start Quests</button>
+            <button type="submit" class="btn-main sfx-click">Join & Earn XP</button>
           </form>
-
           <div id="dashboard" class="dashboard-panel">
             <div class="dash-header">
               <div>
@@ -128,31 +233,25 @@
                 <div style="color:var(--success); font-weight:700;">ACTIVE</div>
               </div>
             </div>
-
+            
             <div style="font-size:12px; color:#aaa; margin-bottom:8px;">YOUR REFERRAL LINK (+150 XP each)</div>
             <div class="ref-box">
-              <span id="refLink" class="ref-link">...</span>
-              <button class="copy-btn" onclick="copyRef()">COPY</button>
+              <span id="refLink" class="ref-link">Generating...</span>
+              <button class="copy-btn sfx-click" onclick="copyRef()">COPY</button>
             </div>
 
             <div style="font-size:12px; color:#aaa; margin-bottom:8px;">QUESTS</div>
             <div class="quest-list">
               <div class="quest-item">
-                <div class="q-info">
-                  <span>Follow on X</span> <span class="q-badge">+200 XP</span>
-                </div>
+                <div class="q-info"><span>Follow on X</span> <span class="q-badge">+200 XP</span></div>
                 <button class="q-btn" id="btn-twitter" onclick="doTask('twitter', 'https://x.com/monadprimates')">Go</button>
               </div>
               <div class="quest-item">
-                <div class="q-info">
-                  <span>Join Telegram</span> <span class="q-badge">+200 XP</span>
-                </div>
+                <div class="q-info"><span>Join Telegram</span> <span class="q-badge">+200 XP</span></div>
                 <button class="q-btn" id="btn-telegram" onclick="doTask('telegram', 'https://t.me/MonaPrime')">Go</button>
               </div>
               <div class="quest-item">
-                <div class="q-info">
-                  <span>Invite 3 Friends</span> <span class="q-badge">+450 XP</span>
-                </div>
+                <div class="q-info"><span>Invite 3 Friends</span> <span class="q-badge">+450 XP</span></div>
                 <button class="q-btn" style="cursor:default; border-color:#333; color:#666;">Auto-Track</button>
               </div>
             </div>
@@ -160,45 +259,121 @@
         </div>
       </div>
 
-      <div class="visual-box">
-        <div class="nft-card">
-          <img src="logo.png" style="width:180px; filter:drop-shadow(0 0 20px var(--primary));">
-          <h2 style="font-family:'Space Grotesk'; margin-top:20px; color:#fff;">Utility Key</h2>
-          <p style="color:var(--primary); font-weight:700;">GENESIS</p>
+      <div class="visual-box sfx-hover sfx-click" onclick="openModal()">
+        <div class="nft-card-3d">
+          <img src="logo.png" alt="MonaPrime" class="card-logo">
+          <div class="card-info">
+            <div class="card-sub">UTILITY NFT</div>
+            <div class="card-title">2,222 Supply</div>
+          </div>
+          <div class="card-cta">Click for Details</div>
         </div>
       </div>
     </div>
   </header>
 
   <section class="stats-row">
-    <div class="stat-card"><span class="stat-val">2,222</span><span class="stat-label">Fixed Supply</span></div>
-    <div class="stat-card"><span class="stat-val">MONAD</span><span class="stat-label">Chain</span></div>
-    <div class="stat-card"><span class="stat-val">90%</span><span class="stat-label">Fee Discount</span></div>
+    <div class="stat-item sfx-hover"><span class="stat-val">2,222</span><span class="stat-label">Fixed Supply</span></div>
+    <div class="stat-item sfx-hover"><span class="stat-val">MONAD</span><span class="stat-label">Chain</span></div>
+    <div class="stat-item sfx-hover"><span class="stat-val">90%</span><span class="stat-label">Fee Discount</span></div>
   </section>
 
   <section id="leaderboard" class="lb-section">
-    <div class="lb-header">
-      <h2 class="section-title" style="font-size:36px; font-weight:700; text-align:center;">Top Recruiters</h2>
-      <p style="color:var(--text-muted); text-align:center;">Real-time. Top 500 get guaranteed WL.</p>
+    <div class="section-header"><span class="section-tag">Top Recruiters</span><h2 class="section-title">Leaderboard</h2></div>
+    <div class="leaderboard-box">
+      <table class="lb-table">
+        <thead><tr><th>Rank</th><th>User</th><th style="text-align:right;">XP</th></tr></thead>
+        <tbody id="lbBody"><tr><td colspan="3" style="text-align:center; padding:20px; color:#555;">Loading live data...</td></tr></tbody>
+      </table>
     </div>
-    <table class="lb-table">
-      <thead><tr><th>Rank</th><th>User</th><th style="text-align:right;">XP</th></tr></thead>
-      <tbody id="lbBody">
-        <tr><td colspan="3" style="text-align:center; padding:20px; color:#555;">Connecting to Monad...</td></tr>
-      </tbody>
-    </table>
   </section>
 
-  <section id="roadmap" style="text-align:center; padding:100px 20px;">
-    <h2>Roadmap & Utility</h2>
-    <p style="color:#888;">See whitepaper for full details.</p>
+  <section id="genesis">
+    <div class="section-header"><span class="section-tag">Utility Package</span><h2 class="section-title">Genesis Utilities</h2></div>
+    <div class="flip-grid">
+      <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="huge-emoji">⚡</div><div class="front-title">Early Access</div><div class="tap-hint">Tap Info</div></div>
+          <div class="flip-back"><h3>Early Access</h3><p>Priority access to all early phases:</p><ul><li>Testnet v1 (Alpha)</li><li>Testnet v2 (Incentivized)</li><li>Mainnet Restricted Alpha</li></ul></div>
+        </div>
+      </div>
+      <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="huge-emoji">💰</div><div class="front-title">Fee Discounts</div><div class="tap-hint">Tap Info</div></div>
+          <div class="flip-back"><h3>Trading Fee Discounts</h3><p>Huge discounts via NFT:</p><ul><li>Up to 90% Maker/Taker Reduction</li><li>Volume-based Tier Discounts</li></ul></div>
+        </div>
+      </div>
+      <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="huge-emoji">📈</div><div class="front-title">Multiplier</div><div class="tap-hint">Tap Info</div></div>
+          <div class="flip-back"><h3>Airdrop Multiplier</h3><p>Maximize your score:</p><ul><li>Score Multiplier applied</li><li>Time-held based bonus boosts</li></ul></div>
+        </div>
+      </div>
+      <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="huge-emoji">🤝</div><div class="front-title">Partner Drops</div><div class="tap-hint">Tap Info</div></div>
+          <div class="flip-back"><h3>Partner Drops</h3><p>Access opportunities:</p><ul><li>Exclusive Whitelist Spots</li><li>Snapshot-based Airdrops</li></ul></div>
+        </div>
+      </div>
+      <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front"><div class="huge-emoji">👑</div><div class="front-title">Privileges</div><div class="tap-hint">Tap Info</div></div>
+          <div class="flip-back"><h3>Future Privileges</h3><p>VIP status for events:</p><ul><li>Priority spots for events</li><li>Whitelist for future products</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="section-header"><span class="section-tag">GTM Strategy</span><h2 class="section-title">Final Roadmap</h2></div>
+    <div class="timeline">
+      <div class="t-item sfx-hover"><div class="t-dot"></div><span class="t-phase">PHASE 1</span><span class="t-weeks">WEEKS 0–4</span><div class="t-title">Setup & Preparation</div><ul class="t-list"><li>MonaPrime Utility Finalization</li><li>NFT Contract & Mint Page Audit</li><li>Branding: "Gorilla-Powered" Identity</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot"></div><span class="t-phase">PHASE 2</span><span class="t-weeks">WEEKS 4–8</span><div class="t-title">NFT Launch</div><ul class="t-list"><li>Pre-Mint Campaign & Partner WL</li><li>Public Mint (2,222 Supply)</li><li>NFT Reveal Event</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 3</span><span class="t-weeks" style="color:#555;">WEEKS 8–12</span><div class="t-title" style="color:#777;">Testnet v1 (Closed)</div><ul class="t-list"><li>Core Trading Engine (BTC/ETH)</li><li>Holder-Exclusive Access Only</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 4</span><span class="t-weeks" style="color:#555;">WEEKS 12–18</span><div class="t-title" style="color:#777;">Incentivized Testnet v2</div><ul class="t-list"><li>Points-Based Task System</li><li>Major Testnet Campaign (Quests)</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 5</span><span class="t-weeks" style="color:#555;">WEEKS 18–28</span><div class="t-title" style="color:#777;">Mainnet Launch</div><ul class="t-list"><li>Public Mainnet (Gorilla Season)</li><li>Airdrop Program Active</li></ul></div>
+      <div class="t-item sfx-hover"><div class="t-dot" style="background:#333;box-shadow:none;"></div><span class="t-phase" style="color:#777;">PHASE 6</span><span class="t-weeks" style="color:#555;">POST-MONTH 7</span><div class="t-title" style="color:#777;">Expansion</div><ul class="t-list"><li>New perpetual markets & Multi-chain</li><li>Global Growth (Asia, LatAm)</li></ul></div>
+    </div>
+  </section>
+
+  <section id="perpdex">
+    <div class="perpdex-box sfx-hover">
+      <div class="section-tag">Gorilla-Powered</div><h2 class="section-title">MonaPrime PerpDEX</h2>
+      <div class="flip-grid" style="margin-top:40px; text-align:left;">
+        <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front"><div class="huge-emoji">⚡</div><div class="front-title">Speed</div><div class="tap-hint">Tap Info</div></div><div class="flip-back"><h3>Lightning Fast</h3><p>Leveraging Monad’s parallel execution.</p></div></div></div>
+        <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front"><div class="huge-emoji">🦍</div><div class="front-title">Strength</div><div class="tap-hint">Tap Info</div></div><div class="flip-back"><h3>Community Owned</h3><p>Liquidity design that benefits LPs.</p></div></div></div>
+        <div class="flip-card sfx-hover" onclick="this.classList.toggle('flipped')"><div class="flip-inner"><div class="flip-front"><div class="huge-emoji">🔐</div><div class="front-title">Security</div><div class="tap-hint">Tap Info</div></div><div class="flip-back"><h3>On-Chain Trust</h3><p>Visible, immutable rewards.</p></div></div></div>
+      </div>
+      <button class="locked-btn"><span>🔒</span> LAUNCH APP (SOON)</button>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="section-header"><h2 class="section-title">FAQ</h2></div>
+    <div style="max-width:800px; margin:0 auto;">
+      <div class="faq-item sfx-click" onclick="toggleFaq(this)"><div class="faq-q">What is MonaPrime? <span class="plus">+</span></div><div class="faq-a">MonaPrime is a Genesis Utility NFT collection powering a PerpDEX on Monad.</div></div>
+      <div class="faq-item sfx-click" onclick="toggleFaq(this)"><div class="faq-q">Is this a PFP? <span class="plus">+</span></div><div class="faq-a">No. It is a utility key for fee discounts and rewards.</div></div>
+      <div class="faq-item sfx-click" onclick="toggleFaq(this)"><div class="faq-q">When is Mint? <span class="plus">+</span></div><div class="faq-a">Date TBA. Join the waitlist for updates.</div></div>
+    </div>
   </section>
 
   <footer>
+    <div class="socials">
+      <a href="https://x.com/monadprimates" target="_blank" class="s-icon sfx-click"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://t.me/MonaPrime" target="_blank" class="s-icon sfx-click"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+      <a href="https://discord.gg/MonaPrime" target="_blank" class="s-icon sfx-click"><svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.086 2.157 2.419 0 1.334-.956 2.42-2.157 2.42zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.086 2.157 2.419 0 1.334-.946 2.42-2.157 2.42z"/></svg></a>
+    </div>
     <p>© 2025 MonaPrime. Built on Monad.</p>
   </footer>
 
   <script>
+    /* --- AUDIO --- */
+    const hoverSound = document.getElementById('sfx-hover');
+    const clickSound = document.getElementById('sfx-click');
+    function playSound(s) { s.currentTime=0; s.play().catch(e=>{}); }
+    document.querySelectorAll('.sfx-hover').forEach(el=>el.addEventListener('mouseenter',()=>playSound(hoverSound)));
+    document.querySelectorAll('.sfx-click').forEach(el=>el.addEventListener('click',()=>playSound(clickSound)));
+
     /* --- CHART --- */
     const canvas=document.getElementById('chart-canvas'); const ctx=canvas.getContext('2d'); let w,h,prices=[],last=window.innerHeight/2;
     function init(){ w=window.innerWidth; h=window.innerHeight; canvas.width=w; canvas.height=h; prices=[]; for(let i=0;i<Math.ceil(w/10);i++)upd(); }
@@ -206,27 +381,26 @@
     function draw(){ ctx.clearRect(0,0,w,h); for(let i=1;i<prices.length;i++){ let o=prices[i-1],c=prices[i],x=i*10,g=c<o; ctx.fillStyle=g?'#1DB954':'#E91429'; ctx.fillRect(x,Math.min(o,c),6,Math.abs(o-c)||1); } upd(); requestAnimationFrame(draw); }
     window.addEventListener('resize',init); init(); draw();
 
-    /* --- REAL BACKEND LOGIC --- */
+    /* --- BACKEND LOGIC --- */
     let currentUserEmail = null;
 
-    // 1. Load Leaderboard
+    // Load Leaderboard
     async function loadLeaderboard() {
       try {
         const res = await fetch('/api/leaderboard');
         const data = await res.json();
         const tbody = document.getElementById('lbBody');
         tbody.innerHTML = '';
-        if(data.length === 0) { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No data yet. Be the first!</td></tr>'; return; }
-        
+        if(data.length === 0) { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:#555;">No data yet.</td></tr>'; return; }
         data.forEach((u, i) => {
           let color = i===0 ? 'color:#FFD700' : '#fff';
           tbody.innerHTML += `<tr><td style="${color};font-weight:800;">#${i+1}</td><td>${u.name}</td><td style="text-align:right;color:#1DB954;">${u.xp} XP</td></tr>`;
         });
-      } catch (e) { console.log("Leaderboard waiting for API deployment..."); }
+      } catch (e) { console.log("Waiting for backend..."); }
     }
     loadLeaderboard();
 
-    // 2. Join System
+    // Join
     const form = document.getElementById('joinForm');
     form.addEventListener('submit', async(e) => {
       e.preventDefault();
@@ -246,40 +420,33 @@
         const data = await res.json();
 
         if (res.ok) {
-          currentUserEmail = email; // Store for tasks
+          currentUserEmail = email;
           form.style.display='none';
           document.getElementById('dashboard').style.display='block';
           
           document.getElementById('refLink').innerText = `${window.location.origin}/?ref=${data.myCode}`;
           document.getElementById('displayXP').innerText = `${data.xp} XP`;
           
-          // Check previous tasks status if user exists
-          if(data.tasks && data.tasks.twitter) markTaskDone('btn-twitter');
-          if(data.tasks && data.tasks.telegram) markTaskDone('btn-telegram');
+          if(data.tasks?.twitter) markTaskDone('btn-twitter');
+          if(data.tasks?.telegram) markTaskDone('btn-telegram');
 
-          loadLeaderboard(); // Refresh
+          loadLeaderboard();
         } else {
           alert("Error: " + data.error);
         }
       } catch (err) {
-        alert("API Error: Please verify api/join.js is deployed.");
+        alert("API Error: Ensure backend is deployed on Vercel.");
       } finally {
         btn.innerText = "Join & Earn XP";
       }
     });
 
-    // 3. Quest Logic
+    // Quests
     async function doTask(taskID, url) {
       const btn = document.getElementById(`btn-${taskID}`);
       if(btn.classList.contains('claimed')) return;
-
-      // Open Link
       window.open(url, '_blank');
-      
-      // Change button state to 'Claiming...'
       btn.innerText = "Verifying...";
-      
-      // Wait 5 seconds (Simulating verify)
       setTimeout(async () => {
         try {
           const res = await fetch('/api/task', {
@@ -288,7 +455,6 @@
             body: JSON.stringify({ email: currentUserEmail, taskID })
           });
           const data = await res.json();
-          
           if(data.success) {
             document.getElementById('displayXP').innerText = `${data.newXP} XP`;
             markTaskDone(`btn-${taskID}`);
@@ -305,6 +471,14 @@
     }
 
     function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); alert("Copied!"); }
+
+    /* --- UTILS --- */
+    function scrollToId(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+    function toggleFaq(el){ el.classList.toggle('active'); playSound(clickSound); }
+    const modal = document.getElementById('detailModal');
+    function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeModal() { modal.classList.remove('active'); document.body.style.overflow = 'auto'; }
+    modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
   </script>
 </body>
 </html>
