@@ -1,59 +1,57 @@
-// api/join.js
 import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
   const { email, referrerCode } = req.body;
-
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Valid email required' });
-  }
+  if (!email) return res.status(400).json({ error: 'Email required' });
 
   try {
-    // 1. Kullanıcı zaten var mı?
+    // 1. Kullanıcı zaten var mı kontrol et
     const existingUser = await kv.hget('users', email);
-    if (existingUser) {
-      return res.status(200).json(existingUser);
-    }
+    if (existingUser) return res.status(200).json(existingUser);
 
-    // 2. Yeni Kullanıcı Oluştur (Gerçek Kod Üretimi)
-    // Emailin baş harfleri + Rastgele sayı (Örn: MONA-X92A)
-    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+    // 2. Yeni Kişiye Özel Kod Üret (Gerçek)
+    const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
     const myCode = `MONA-${randomPart}`;
     
-    let xp = 100; // Başlangıç puanı
+    let xp = 100; // Başlangıç XP
 
-    // 3. Referans Kontrolü (Biri davet ettiyse)
+    // 3. Referans Kontrolü (Varsa Davet Edene XP ver)
     if (referrerCode) {
       const referrerEmail = await kv.hget('codes', referrerCode);
       if (referrerEmail) {
-        // Davet edene +100 XP ver
-        const referrerData = await kv.hget('users', referrerEmail);
-        if (referrerData) {
-          referrerData.xp += 100;
-          referrerData.inviteCount = (referrerData.inviteCount || 0) + 1;
-          await kv.hset('users', { [referrerEmail]: referrerData });
-          
-          // Leaderboard'u güncelle
-          await kv.zadd('leaderboard', { score: referrerData.xp, member: referrerEmail });
+        // Davet edene +150 XP (Invite Bonusu)
+        await kv.zincrby('leaderboard', 150, referrerEmail);
+        
+        // Davet eden kullanıcının metadata'sını güncelle
+        const refUser = await kv.hget('users', referrerEmail);
+        if (refUser) {
+          refUser.xp += 150;
+          refUser.inviteCount = (refUser.inviteCount || 0) + 1;
+          await kv.hset('users', { [referrerEmail]: refUser });
         }
-        // Yeni gelene de ekstra bonus (Opsiyonel)
-        xp += 50; 
+        xp += 50; // Referansla gelene ekstra 50 XP
       }
     }
 
-    const newUser = { email, myCode, xp, inviteCount: 0 };
+    // 4. Yeni Kullanıcıyı Kaydet
+    const newUser = { 
+      email, 
+      myCode, 
+      xp, 
+      inviteCount: 0,
+      tasks: { twitter: false, telegram: false } // Görev durumu
+    };
 
-    // 4. Veritabanına Kaydet
-    await kv.hset('users', { [email]: newUser }); // Kullanıcı verisi
-    await kv.hset('codes', { [myCode]: email });  // Kod -> Email eşleşmesi
-    await kv.zadd('leaderboard', { score: xp, member: email }); // Sıralama
+    await kv.hset('users', { [email]: newUser });
+    await kv.hset('codes', { [myCode]: email });
+    await kv.zadd('leaderboard', { score: xp, member: email });
 
     return res.status(200).json(newUser);
 
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Database connection failed' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }

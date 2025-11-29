@@ -1,16 +1,19 @@
-// api/leaderboard.js
 import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
   try {
-    // Get top 10 users (Email and Score)
-    // zrange returns array like [email1, score1, email2, score2...]
-    const rawData = await kv.zrange('leaderboard', 0, 9, { rev: true, withScores: true });
+    // En yüksek 50 kişiyi çek
+    const rawData = await kv.zrange('leaderboard', 0, 49, { rev: true, withScores: true });
     
     const leaderboard = [];
     for (let i = 0; i < rawData.length; i += 2) {
+      // E-postayı maskele (ali***@gmail.com -> al***)
+      let email = rawData[i];
+      let name = email.split('@')[0];
+      if (name.length > 3) name = name.substring(0, 3) + '***';
+      
       leaderboard.push({
-        email: rawData[i],
+        name: name,
         xp: rawData[i + 1]
       });
     }
